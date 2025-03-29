@@ -5,11 +5,15 @@ public class PlayerDeath : MonoBehaviour
 {
 
     private Animator _an;
-    private bool _dead = false;
+    private Rigidbody2D _rb;
+    private BoxCollider2D _bc;
     
     void Start()
     {
         _an = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody2D>();
+        _bc = GetComponent<BoxCollider2D>();
+        
         _an.ResetTrigger("death");
     }
 
@@ -19,10 +23,15 @@ public class PlayerDeath : MonoBehaviour
         if (collision.gameObject.CompareTag("DeadlyBody"))
         {
             Debug.Log("Death");
-            if (!_dead)
+            if (!Store.dead)
             {
                 _an.SetTrigger("death");
-                _dead = true;
+                // Hack position because of death animation is very low
+                Vector2 ofsset = _bc.offset;
+                ofsset.y -= 1.3f;
+                _bc.offset = ofsset; 
+                
+                Store.dead = true;
             }
         }
     }

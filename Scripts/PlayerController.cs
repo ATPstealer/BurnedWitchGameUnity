@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Store.dead) return;
+        
         // TODO: Somewhere the joystick gets caught and the movement breaks.
         var jx = _pi.actions["Move"].ReadValue<Vector2>().x;
         var jy = _pi.actions["Move"].ReadValue<Vector2>().y;
@@ -66,7 +68,15 @@ public class PlayerController : MonoBehaviour
         var v = _rb.linearVelocity;
         
         // Mirror sprites if player go left.
-        _sr.flipX = v.x < 0;
+        if (v.x < 0.1f)
+        {
+            _sr.flipX = true;    
+        }
+
+        if (v.x > -0.1f)
+        {
+            _sr.flipX = false;
+        }
         
         state = math.abs(v.x) > 0.1f ? State.Run : State.Idle;
 
