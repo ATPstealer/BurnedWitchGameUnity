@@ -8558,6 +8558,7 @@ GameObject:
   - component: {fileID: 647092531}
   - component: {fileID: 647092530}
   - component: {fileID: 647092529}
+  - component: {fileID: 647092532}
   m_Layer: 0
   m_Name: AngryPig
   m_TagString: DeadlyBody
@@ -8708,6 +8709,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &647092532
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647092527}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 755720a5fe413fb4695ab4428f372ea6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &678884444
 GameObject:
   m_ObjectHideFlags: 0
@@ -9557,7 +9580,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.026876628, y: -0.78571415}
+  m_Offset: {x: 0.026876628, y: -0.06851959}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -9567,7 +9590,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5916685, y: 2.6038723}
+  m_Size: {x: 0.5916685, y: 1.1694832}
   m_EdgeRadius: 0.00001
 --- !u!114 &1923700460
 MonoBehaviour:

@@ -1,6 +1,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,8 +28,17 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Store.dead) return;
-        
+        if (Store.dead)
+        {
+            LevelRestart();
+        };
+
+        MovementHandle();
+        AnimationChoose();
+    }
+
+    private void MovementHandle()
+    {
         // TODO: Somewhere the joystick gets caught and the movement breaks.
         var jx = _pi.actions["Move"].ReadValue<Vector2>().x;
         var jy = _pi.actions["Move"].ReadValue<Vector2>().y;
@@ -55,14 +65,12 @@ public class PlayerController : MonoBehaviour
         {
             cv.y += jumpForce;
         }
-
         
         // Return velocity value and Choose animation according speed
         _rb.linearVelocity = cv;
-        AnimationChoose();
     }
 
-   private void AnimationChoose()
+    private void AnimationChoose()
     {
         State state = State.Idle;
         var v = _rb.linearVelocity;
@@ -96,5 +104,13 @@ public class PlayerController : MonoBehaviour
     private bool IsGrounded()
     {
         return Physics2D.BoxCast(_bc.bounds.center, _bc.bounds.size, 0f, Vector2.down, 0.1f, 1 << LayerMask.NameToLayer("Ground"));
+    }
+
+    private void LevelRestart()
+    {
+        if (_pi.actions["Jump"].WasPressedThisFrame())
+        {
+            SceneManager.LoadScene(Store.level);
+        }
     }
 }
