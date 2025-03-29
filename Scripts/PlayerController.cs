@@ -15,7 +15,8 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer _sr;
     private BoxCollider2D _bc;
     
-    private enum State { Idle, Run, Jump, Fall }
+    private enum State { Idle, Run, Jump, Fall, Fire }
+    private bool _fire = false;
     
     void Start()
     {
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour
         };
 
         MovementHandle();
+        CastHandle();
         AnimationChoose();
     }
 
@@ -98,6 +100,11 @@ public class PlayerController : MonoBehaviour
             state = State.Fall;
         }
 
+        if (_fire)
+        {
+            state = State.Fire;
+        }
+
         _an.SetInteger("state", (int)state);
     }
 
@@ -111,6 +118,18 @@ public class PlayerController : MonoBehaviour
         if (_pi.actions["Jump"].WasPressedThisFrame())
         {
             SceneManager.LoadScene(Store.level);
+        }
+    }
+
+    private void CastHandle()
+    {
+        if (_pi.actions["Fire"].WasPressedThisFrame())
+        {
+            _fire = true;
+        }
+        else
+        {
+            _fire = false;
         }
     }
 }
