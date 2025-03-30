@@ -3,34 +3,37 @@ using UnityEngine;
 
 public class BotCollider : MonoBehaviour
 {
-    [SerializeField] private int _hp = 5;
+    [SerializeField] private int hp = 5;
+    [SerializeField] private int botScore = 1;
 
     private Animator _an;
     private bool _isDead;
+    private Rigidbody2D _rb;
 
     private void Start()
     {
         _an = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Weapon"))
         {
-            _hp--;
+            hp--;
         }
 
         if (_isDead) return;
         
-        if (_hp <= 0)
+        if (hp <= 0)
         {
             _an.SetTrigger("death");
-            Store.Score += 1;
-            Debug.Log("ScoreChange");
+            _rb.linearVelocity = Vector2.zero;
+            Store.Score += botScore;
             _isDead = true;
         }
     }
-
+    
     public void DestroyObject()
     {
         Destroy(gameObject);

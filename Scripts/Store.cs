@@ -10,6 +10,24 @@ public class Store : MonoBehaviour
     public static bool lose = false;
     public static float manaMax = 100;
     public static float manaRegen = 10f;
+    public static float maxSpeed = 20f;
+    
+    // Message in right upper corner
+    public static string MessageUI
+    {
+        get => _messageUI;
+        set
+        {
+            if (value != _messageUI) 
+            {
+                _messageUI = value;
+                OnMessageUIChanged?.Invoke(_messageUI);
+            }
+        }
+    }
+    private static string _messageUI = ""; 
+    public static event System.Action<string> OnMessageUIChanged;
+
     
     // Mana
     public static float Mana

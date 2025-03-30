@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
         if (Store.dead)
         {
             LevelRestart();
+            return;
         };
 
         MovementHandle();
@@ -84,6 +85,10 @@ public class PlayerController : MonoBehaviour
                 Store.Mana -= 5f;
             } 
         }
+        
+        // Restrict fast speed
+        if (cv.x > Store.maxSpeed) cv.x = Store.maxSpeed;
+        if (cv.y > Store.maxSpeed) cv.y = Store.maxSpeed;
         
         // Return velocity value and Choose animation according speed
         _rb.linearVelocity = cv;
@@ -141,6 +146,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_pi.actions["Jump"].WasPressedThisFrame())
         {
+            Store.MessageUI = "";
             SceneManager.LoadScene(Store.level);
         }
     }
@@ -181,6 +187,12 @@ public class PlayerController : MonoBehaviour
     
     private void AttackHandle()
     {
+        if (_currentAttackBox != null)
+        {
+            Attack();
+            return;
+        }
+        
         if (_pi.actions["Attack"].WasPressedThisFrame())
         {
             _attack = true;
@@ -193,20 +205,23 @@ public class PlayerController : MonoBehaviour
     }
 
     private GameObject _currentAttackBox;
+    private Rigidbody2D _currentAttackBoxTransform;
     
     private void Attack()
     {
+        // Attack Box position
+        float xShift = _direction ? 1.3f : -1.3f;
+        Vector2 attackBoxPosition = new Vector2(_rb.position.x + xShift, _rb.position.y);
+        
         if (_currentAttackBox != null)
         {
+            _currentAttackBoxTransform.MovePosition(new Vector2(_rb.position.x + xShift, _rb.position.y));
             return; // Exit if an AttackBox already exists
         }
-
-        // Attack Box position
-        float xShift = _direction ? 1f : -1f;
-        Vector2 attackBoxPosition = new Vector2(_rb.position.x + xShift, _rb.position.y);
         
         // Create fireball and speed
         _currentAttackBox = Instantiate(attackBoxPrefab, attackBoxPosition, quaternion.identity);
+        _currentAttackBoxTransform = _currentAttackBox.GetComponent<Rigidbody2D>();
         
         // Destroy Attack Box after delay
         StartCoroutine(DestroyAttackBox());
@@ -214,18 +229,17 @@ public class PlayerController : MonoBehaviour
     
     private IEnumerator DestroyAttackBox()
     {
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(1.3f);
         Destroy(_currentAttackBox);
         _currentAttackBox = null;
+        _currentAttackBoxTransform = null;
     }
     
     private void ManaRegen()
     {
         if (Store.Mana < Store.manaMax)
         {
-            Debug.Log(Store.manaRegen * Time.deltaTime);
             Store.Mana += Store.manaRegen * Time.deltaTime;
-            Debug.Log(Store.Mana);
         }
     }
 
