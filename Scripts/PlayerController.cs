@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float flySpeed = 35f;
     [SerializeField] private float jumpForce = 20f;
     [SerializeField] private GameObject fireballPrefab; 
+    [SerializeField] private GameObject attackBoxPrefab; 
     
     private PlayerInput _pi;
     private Rigidbody2D _rb;
@@ -16,8 +18,9 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer _sr;
     private BoxCollider2D _bc;
     
-    private enum State { Idle, Run, Jump, Fall, Fire }
+    private enum State { Idle, Run, Jump, Fall, Fire, Attack }
     private bool _fire = false;
+    private bool _attack = false;
     private bool _direction = true; // Right is true
     
     void Start()
@@ -38,6 +41,7 @@ public class PlayerController : MonoBehaviour
 
         MovementHandle();
         CastHandle();
+        AttackHandle();
         AnimationChoose();
         ManaRegen();
     }
@@ -119,6 +123,11 @@ public class PlayerController : MonoBehaviour
         {
             state = State.Fire;
         }
+        
+        if (_attack)
+        {
+            state = State.Attack;
+        }
 
         _an.SetInteger("state", (int)state);
     }
@@ -169,7 +178,47 @@ public class PlayerController : MonoBehaviour
         SpriteRenderer fireballSr = fireball.GetComponent<SpriteRenderer>();
         fireballSr.flipX = !_direction;
     }
+    
+    private void AttackHandle()
+    {
+        if (_pi.actions["Attack"].WasPressedThisFrame())
+        {
+            _attack = true;
+            Attack(); 
+        }
+        else
+        {
+            _attack = false;
+        }
+    }
 
+    private GameObject _currentAttackBox;
+    
+    private void Attack()
+    {
+        if (_currentAttackBox != null)
+        {
+            return; // Exit if an AttackBox already exists
+        }
+
+        // Attack Box position
+        float xShift = _direction ? 1f : -1f;
+        Vector2 attackBoxPosition = new Vector2(_rb.position.x + xShift, _rb.position.y);
+        
+        // Create fireball and speed
+        _currentAttackBox = Instantiate(attackBoxPrefab, attackBoxPosition, quaternion.identity);
+        
+        // Destroy Attack Box after delay
+        StartCoroutine(DestroyAttackBox());
+    }
+    
+    private IEnumerator DestroyAttackBox()
+    {
+        yield return new WaitForSeconds(1.2f);
+        Destroy(_currentAttackBox);
+        _currentAttackBox = null;
+    }
+    
     private void ManaRegen()
     {
         if (Store.Mana < Store.manaMax)
