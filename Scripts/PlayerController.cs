@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] private float flySpeed = 35f;
     [SerializeField] private float jumpForce = 20f;
+    [SerializeField] private GameObject fireballPrefab; 
     
     private PlayerInput _pi;
     private Rigidbody2D _rb;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     
     private enum State { Idle, Run, Jump, Fall, Fire }
     private bool _fire = false;
+    private bool _direction = true; // Right is true
     
     void Start()
     {
@@ -77,16 +79,18 @@ public class PlayerController : MonoBehaviour
         State state = State.Idle;
         var v = _rb.linearVelocity;
         
+        // Set direction for blasts
+        if (v.x > 0.1f)
+        {
+            _direction = true;
+        }
+        if (v.x < -0.1f)
+        {
+            _direction = false;
+        }
+        
         // Mirror sprites if player go left.
-        if (v.x < 0.1f)
-        {
-            _sr.flipX = true;    
-        }
-
-        if (v.x > -0.1f)
-        {
-            _sr.flipX = false;
-        }
+        _sr.flipX = !_direction;
         
         state = math.abs(v.x) > 0.1f ? State.Run : State.Idle;
 
@@ -126,10 +130,25 @@ public class PlayerController : MonoBehaviour
         if (_pi.actions["Fire"].WasPressedThisFrame())
         {
             _fire = true;
+            ShootFireball(); 
         }
         else
         {
             _fire = false;
         }
     }
+    
+    private void ShootFireball()
+    {
+        float xShift = _direction ? .9f : -.9f;
+        Vector2 fireballPosition = new Vector2(_rb.position.x + xShift, _rb.position.y);
+        
+        GameObject fireball = Instantiate(fireballPrefab, fireballPosition, quaternion.identity);
+        Rigidbody2D fireballRb = fireball.GetComponent<Rigidbody2D>();
+        float fireballSpeed = _direction ? 10f : -10f;
+        fireballRb.linearVelocity = new Vector2(fireballSpeed, 0);
+        SpriteRenderer fireballSr = fireball.GetComponent<SpriteRenderer>();
+        fireballSr.flipX = !_direction;
+    }
+
 }

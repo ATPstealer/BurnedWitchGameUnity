@@ -259,6 +259,83 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366734799}
   m_CullTransparentMesh: 1
+--- !u!1001 &375915695
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -46.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -8.554354
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028268212447775661, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3927239539875726161, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 8519513403262563815, guid: 1da3c66fffcc53e489b847cd953507b9, type: 3}
+    - target: {fileID: 4463062661638919423, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4463062661638919423, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7310037361774027607, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
+      propertyPath: m_Name
+      value: Fireball
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
 --- !u!1 &511738730
 GameObject:
   m_ObjectHideFlags: 0
@@ -8700,6 +8777,7 @@ GameObject:
   - component: {fileID: 647092529}
   - component: {fileID: 647092532}
   - component: {fileID: 647092533}
+  - component: {fileID: 647092534}
   m_Layer: 0
   m_Name: AngryPig
   m_TagString: DeadlyBody
@@ -8780,7 +8858,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -8794,7 +8872,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &647092531
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8889,6 +8967,19 @@ MonoBehaviour:
   - {fileID: 12182547}
   speed: 5
   leftDirection: 1
+--- !u!114 &647092534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647092527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdbb5fe710f3bc043a8dea56996d30d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hp: 5
 --- !u!1 &678884444
 GameObject:
   m_ObjectHideFlags: 0
@@ -9766,6 +9857,7 @@ MonoBehaviour:
   speed: 5
   flySpeed: 35
   jumpForce: 20
+  fireballPrefab: {fileID: 7310037361774027607, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
 --- !u!114 &1923700457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9898,3 +9990,4 @@ SceneRoots:
   - {fileID: 1041884112}
   - {fileID: 547224654}
   - {fileID: 678884445}
+  - {fileID: 375915695}
