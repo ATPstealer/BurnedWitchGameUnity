@@ -8,6 +8,26 @@ public class Store : MonoBehaviour
     public static bool dead = false;
     public static bool win = false;
     public static bool lose = false;
+    public static float manaMax = 100;
+    public static float manaRegen = 10f;
+    
+    // Mana
+    public static float Mana
+    {
+        get => _mana;
+        set
+        {
+            if (Mathf.Abs(_mana - value) > Mathf.Epsilon) // Avoid event triggers on very tiny value changes
+            {
+                _mana = value;
+                OnManaChanged?.Invoke(_mana);
+            }
+        }
+    }
+
+    private static float _mana = 100f; 
+    public static event System.Action<float> OnManaChanged;
+    // Lives 
     public static int Lives
     {
         get => _lives;
@@ -22,6 +42,7 @@ public class Store : MonoBehaviour
     }
     private static int _lives = 3;
     public static event System.Action<int> OnLivesChanged;
+    // Score 
     public static int Score
     {
         get => _score;

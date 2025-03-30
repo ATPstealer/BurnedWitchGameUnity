@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
         MovementHandle();
         CastHandle();
         AnimationChoose();
+        ManaRegen();
     }
 
     private void MovementHandle()
@@ -60,14 +61,24 @@ public class PlayerController : MonoBehaviour
         }
         
         // Jump or Fly
-        if (math.abs(jy) > 0.1f)
+        if (math.abs(jy) > 0.5f)
         {
-            cv.y += jy * flySpeed * Time.deltaTime;
+            if (Store.Mana > 1f)
+            {
+                cv.y += jy * flySpeed * Time.deltaTime;
+                // Cost Fly
+                Store.Mana -= 30f * Time.deltaTime;
+            }
         }
         
         if (_pi.actions["Jump"].WasPressedThisFrame() && IsGrounded())
         {
-            cv.y += jumpForce;
+            if (Store.Mana > 5f)
+            {
+                cv.y += jumpForce;
+                // Cost Jump
+                Store.Mana -= 5f;
+            } 
         }
         
         // Return velocity value and Choose animation according speed
@@ -140,15 +151,33 @@ public class PlayerController : MonoBehaviour
     
     private void ShootFireball()
     {
+        // Cost Fireball
+        // Mana withdraw
+        float fireballCost = 10f;
+        if (Store.Mana < fireballCost) return;
+        Store.Mana -= fireballCost;
+        
+        // Fireball position
         float xShift = _direction ? .9f : -.9f;
         Vector2 fireballPosition = new Vector2(_rb.position.x + xShift, _rb.position.y);
         
+        // Create fireball and speed
         GameObject fireball = Instantiate(fireballPrefab, fireballPosition, quaternion.identity);
         Rigidbody2D fireballRb = fireball.GetComponent<Rigidbody2D>();
         float fireballSpeed = _direction ? 10f : -10f;
         fireballRb.linearVelocity = new Vector2(fireballSpeed, 0);
         SpriteRenderer fireballSr = fireball.GetComponent<SpriteRenderer>();
         fireballSr.flipX = !_direction;
+    }
+
+    private void ManaRegen()
+    {
+        if (Store.Mana < Store.manaMax)
+        {
+            Debug.Log(Store.manaRegen * Time.deltaTime);
+            Store.Mana += Store.manaRegen * Time.deltaTime;
+            Debug.Log(Store.Mana);
+        }
     }
 
 }
