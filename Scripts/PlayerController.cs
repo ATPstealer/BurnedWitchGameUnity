@@ -210,7 +210,7 @@ public class PlayerController : MonoBehaviour
     private void Attack()
     {
         // Attack Box position
-        float xShift = _direction ? 1.3f : -1.3f;
+        float xShift = _direction ? 1.4f : -1.4f;
         Vector2 attackBoxPosition = new Vector2(_rb.position.x + xShift, _rb.position.y);
         
         if (_currentAttackBox != null)
