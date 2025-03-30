@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
-    [SerializeField] private float flySpeed = 35f;
+    [SerializeField] private float flySpeed = 30f;
     [SerializeField] private float jumpForce = 20f;
     [SerializeField] private GameObject fireballPrefab; 
     [SerializeField] private GameObject attackBoxPrefab; 
@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer _sr;
     private BoxCollider2D _bc;
     
-    private enum State { Idle, Run, Jump, Fall, Fire, Attack }
+    private enum State { Idle, Run, Jump, Fall, Fire, Attack, Fly }
+    private bool _fly = false;
     private bool _fire = false;
     private bool _attack = false;
     private bool _direction = true; // Right is true
@@ -66,14 +67,19 @@ public class PlayerController : MonoBehaviour
         }
         
         // Jump or Fly
-        if (math.abs(jy) > 0.5f)
+        if (math.abs(jy) > 0.7f)
         {
             if (Store.Mana > 1f)
             {
                 cv.y += jy * flySpeed * Time.deltaTime;
                 // Cost Fly
                 Store.Mana -= 30f * Time.deltaTime;
+                _fly = true;
             }
+        }
+        else
+        {
+            _fly = false;
         }
         
         if (_pi.actions["Jump"].WasPressedThisFrame() && IsGrounded())
@@ -122,6 +128,11 @@ public class PlayerController : MonoBehaviour
         if (v.y < -2)
         {
             state = State.Fall;
+        }
+
+        if (_fly)
+        {
+            state = State.Fly;
         }
 
         if (_fire)
