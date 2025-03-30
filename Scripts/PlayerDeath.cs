@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
@@ -31,6 +32,11 @@ public class PlayerDeath : MonoBehaviour
                 _rb.position = new Vector2(_rb.position.x, _rb.position.y + 1.33f);
                 
                 Store.dead = true;
+                Store.Lives--;
+                if (Store.Lives <= 0)
+                {
+                    SceneManager.LoadScene(0);
+                }
             }
         }
     }
