@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float flySpeed = 30f;
     [SerializeField] private float jumpForce = 15f;
     [SerializeField] private GameObject fireballPrefab; 
+    [SerializeField] private GameObject thunderPrefab; 
     [SerializeField] private GameObject attackBoxPrefab; 
     
     private PlayerInput _pi;
@@ -18,12 +19,16 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer _sr;
     private BoxCollider2D _bc;
     
-    private enum State { Idle, Run, Jump, Fall, Fire, Attack, Fly }
+    private enum State { Idle, Run, Jump, Fall, Fire, Attack, Fly, Thunder }
     private bool _fly = false;
     private bool _flyDown = false;
     private bool _fire = false;
+    private bool _thunder = false;
     private bool _attack = false;
     private bool _direction = true; // Right is true
+    private const float FireballCost = 10f;
+    private const float ThunderCost = 50f;
+    
     
     void Start()
     {
@@ -146,6 +151,11 @@ public class PlayerController : MonoBehaviour
         {
             state = State.Attack;
         }
+        
+        if (_thunder)
+        {
+            state = State.Thunder;
+        }
 
         _an.SetInteger("state", (int)state);
     }
@@ -166,7 +176,7 @@ public class PlayerController : MonoBehaviour
 
     private void CastHandle()
     {
-        if (_pi.actions["Fire"].WasPressedThisFrame())
+        if (_pi.actions["Fire"].WasPressedThisFrame() && Store.Mana > FireballCost)
         {
             _fire = true;
             ShootFireball(); 
@@ -175,15 +185,24 @@ public class PlayerController : MonoBehaviour
         {
             _fire = false;
         }
+        
+        if (_pi.actions["Thunder"].WasPressedThisFrame() && Store.Mana > ThunderCost)
+        {
+            _thunder = true;
+            ShootThunder(); 
+        }
+        else
+        {
+            _thunder = false;
+        }
     }
     
     private void ShootFireball()
     {
         // Cost Fireball
         // Mana withdraw
-        float fireballCost = 10f;
-        if (Store.Mana < fireballCost) return;
-        Store.Mana -= fireballCost;
+        if (Store.Mana < FireballCost) return;
+        Store.Mana -= FireballCost;
         
         // Fireball position
         float xShift = _direction ? .9f : -.9f;
@@ -192,10 +211,39 @@ public class PlayerController : MonoBehaviour
         // Create fireball and speed
         GameObject fireball = Instantiate(fireballPrefab, fireballPosition, quaternion.identity);
         Rigidbody2D fireballRb = fireball.GetComponent<Rigidbody2D>();
-        float fireballSpeed = _direction ? 10f : -10f;
+        float fireballSpeed = _direction ? 7f : -7f;
         fireballRb.linearVelocity = new Vector2(fireballSpeed, 0);
         SpriteRenderer fireballSr = fireball.GetComponent<SpriteRenderer>();
         fireballSr.flipX = !_direction;
+    }
+    
+    private void ShootThunder()
+    {
+        // Cost Thunderstorm
+        // Mana withdraw
+        if (Store.Mana < ThunderCost) return;
+        Store.Mana -= ThunderCost;
+        
+        // Create 3 thunderstorms
+        StartCoroutine(CreateThunderstorm(0.2f));
+        StartCoroutine(CreateThunderstorm(0.3f));
+        StartCoroutine(CreateThunderstorm(0.4f));
+    }
+
+    IEnumerator CreateThunderstorm(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        // Thunder position
+        float xShift = _direction ? 1f : -1f;
+        Vector2 thunderPosition = new Vector2(_rb.position.x + xShift, _rb.position.y);
+        
+        // Creating
+        GameObject thunder = Instantiate(thunderPrefab, thunderPosition, quaternion.identity);
+        Rigidbody2D thunderRb = thunder.GetComponent<Rigidbody2D>();
+        float thunderSpeed = _direction ? 22f : -22f;
+        thunderRb.linearVelocity = new Vector2(thunderSpeed, 0);
+        SpriteRenderer thunderSr = thunder.GetComponent<SpriteRenderer>();
+        thunderSr.flipX = !_direction;
     }
     
     private void AttackHandle()
