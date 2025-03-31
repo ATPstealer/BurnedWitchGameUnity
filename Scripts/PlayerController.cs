@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
     [SerializeField] private float flySpeed = 30f;
-    [SerializeField] private float jumpForce = 20f;
+    [SerializeField] private float jumpForce = 15f;
     [SerializeField] private GameObject fireballPrefab; 
     [SerializeField] private GameObject attackBoxPrefab; 
     
@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     
     private enum State { Idle, Run, Jump, Fall, Fire, Attack, Fly }
     private bool _fly = false;
+    private bool _flyDown = false;
     private bool _fire = false;
     private bool _attack = false;
     private bool _direction = true; // Right is true
@@ -75,6 +76,7 @@ public class PlayerController : MonoBehaviour
                 // Cost Fly
                 Store.Mana -= 30f * Time.deltaTime;
                 _fly = true;
+                _flyDown = jy < 0f;
             }
         }
         else

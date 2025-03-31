@@ -9,6 +9,7 @@ public class Score : MonoBehaviour
     {
         // Get the Text component attached to this GameObject
         _scoreText = GetComponent<TextMeshProUGUI>();
+        _scoreText.text = "Score: " + Store.Score;
     }
     
     private void OnEnable()
