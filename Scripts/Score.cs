@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
-    private TextMeshProUGUI _scoreText;
-
+    private static TextMeshProUGUI _scoreText;
+    
     private void Awake()
     {
         // Get the Text component attached to this GameObject
@@ -24,7 +24,7 @@ public class Score : MonoBehaviour
         Store.OnScoreChanged -= UpdateScoreText;
     }
 
-    private void UpdateScoreText(int newScore)
+    public static void UpdateScoreText(int newScore)
     {
         // Update the text display with the new score
         _scoreText.text = "Score: " + newScore;

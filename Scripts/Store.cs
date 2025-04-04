@@ -11,6 +11,7 @@ public class Store : MonoBehaviour
     public static float manaMax = 100;
     public static float manaRegen = 10f;
     public static float maxSpeed = 20f;
+    public static int heroLevel = 1;
     
     // Message in right upper corner
     public static string MessageUI

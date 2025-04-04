@@ -8,6 +8,7 @@ public class Menu : MonoBehaviour
         Store.level = 1;
         Store.Score = 0;
         Store.Lives = 3;
+        Store.MessageUI = "";
         SceneManager.LoadScene(Store.level);
     }
 

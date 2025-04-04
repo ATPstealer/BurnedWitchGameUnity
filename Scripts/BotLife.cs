@@ -21,6 +21,7 @@ public class BotCollider : MonoBehaviour
         if (collision.gameObject.CompareTag("Weapon"))
         {
             hp--;
+            _an.SetTrigger("damage");
         }
 
         if (_isDead) return;
@@ -37,5 +38,10 @@ public class BotCollider : MonoBehaviour
     public void DestroyObject()
     {
         Destroy(gameObject);
+    }
+
+    public void ResetDamage()
+    {
+        _an.ResetTrigger("damage");
     }
 }
