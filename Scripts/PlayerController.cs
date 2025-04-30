@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
-    [SerializeField] private float flySpeed = 30f;
+    [SerializeField] private float flySpeed = 50f;
     [SerializeField] private float jumpForce = 15f;
     [SerializeField] private GameObject fireballPrefab; 
     [SerializeField] private GameObject thunderPrefab; 
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     
     private enum State { Idle, Run, Jump, Fall, Fire, Attack, Fly, Thunder }
     private bool _fly = false;
-    private bool _flyDown = false;
+    private bool _flyBlock = false;
     private bool _fire = false;
     private bool _thunder = false;
     private bool _attack = false;
@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
         };
 
         MovementHandle();
+        FlyHandle();
         CastHandle();
         AttackHandle();
         AnimationChoose();
@@ -56,10 +57,7 @@ public class PlayerController : MonoBehaviour
 
     private void MovementHandle()
     {
-        // TODO: Somewhere the joystick gets caught and the movement breaks.
         var jx = _pi.actions["Move"].ReadValue<Vector2>().x;
-        var jy = _pi.actions["Move"].ReadValue<Vector2>().y;
-        
         var cv = _rb.linearVelocity;
         
         // Run or Idle
@@ -72,23 +70,7 @@ public class PlayerController : MonoBehaviour
             cv.x = 0;
         }
         
-        // Jump or Fly
-        if (math.abs(jy) > 0.7f)
-        {
-            if (Store.Mana > 1f)
-            {
-                cv.y += jy * flySpeed * Time.deltaTime;
-                // Cost Fly
-                Store.Mana -= 30f * Time.deltaTime;
-                _fly = true;
-                _flyDown = jy < 0f;
-            }
-        }
-        else
-        {
-            _fly = false;
-        }
-        
+        // Jump 
         if (_pi.actions["Jump"].WasPressedThisFrame() && IsGrounded())
         {
             if (Store.Mana > 5f)
@@ -105,6 +87,39 @@ public class PlayerController : MonoBehaviour
         
         // Return velocity value and Choose animation according speed
         _rb.linearVelocity = cv;
+    }
+
+    private void FlyHandle()
+    {
+        var cv = _rb.linearVelocity;
+        if (_pi.actions["Fly"].IsPressed() && !IsGrounded())
+        {
+            if (Store.Mana > 1f && !_flyBlock)
+            {
+                Store.Mana -= 30f * Time.deltaTime;
+                _fly = true;
+                if (cv.y < 0)
+                {
+                    cv.y += flySpeed * Time.deltaTime;
+                    _rb.linearVelocity = cv;
+                }
+            }
+            else
+            {
+                _flyBlock = true;
+                _fly = false;
+            }
+        }
+        else
+        {
+            _fly = false;
+        }
+
+        if (_flyBlock && IsGrounded())
+        {
+            _flyBlock = false;
+        }
+        
     }
 
     private void AnimationChoose()
