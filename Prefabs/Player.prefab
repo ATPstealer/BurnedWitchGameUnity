@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 763633453164957589}
   - component: {fileID: 2039278053435325356}
   - component: {fileID: 635614239075138912}
+  - component: {fileID: 8060437694552371090}
+  - component: {fileID: 6586307274318400380}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -31,7 +33,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000284319852398187}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -142.609, y: -28.875, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -165,6 +167,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 30a40d5e-6d39-4ad3-b0a9-153664c9afa8
     m_ActionName: Player/Thunder
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8e82d42d-f7ef-43c8-98ac-73c63dcb6330
+    m_ActionName: Player/Fly
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -183,8 +189,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  flySpeed: 30
-  jumpForce: 15
+  flySpeed: 50
+  jumpForce: 17
   fireballPrefab: {fileID: 7310037361774027607, guid: f6ca412ee2edc364cbaca79704d05d2e, type: 3}
   thunderPrefab: {fileID: 7127885904579714328, guid: 354c8e9f0cef0a4498a43c8fbda13a18, type: 3}
   attackBoxPrefab: {fileID: 8695897106651824231, guid: 016a933a401256240aacfcb573826d50, type: 3}
@@ -268,3 +274,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5381b839fcd012c40940bea218f11621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8060437694552371090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9000284319852398187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7939686b5f18bb4fa14f2fccef84dde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6586307274318400380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9000284319852398187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c36a672e7a9e4646a4bd481f5a012dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 5
