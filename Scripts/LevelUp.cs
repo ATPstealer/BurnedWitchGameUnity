@@ -21,17 +21,23 @@ public class LevelUp : MonoBehaviour
 
     private void UpdateLevelUp(int newScore)
     {
-        if (Store.Score >= 5*Store.heroLevel)
+        if (Store.Score >= 5*Store.heroLevel && newScore >= 5*Store.heroLevel)
         {
-            Store.Score -= 5*Store.heroLevel;
-            Store.heroLevel++;
-            Store.Lives++;
-            Store.manaMax += 10;
-        
-            Store.MessageUI = "Level up!!!";
-            Score.UpdateScoreText(Store.Score);
-            StartCoroutine(CleanMessage());
+            StartCoroutine(LevelUpHandle());
         }
+    }
+    
+    IEnumerator LevelUpHandle()
+    {
+        yield return new WaitForSeconds(Time.deltaTime * 2);
+        Store.Score -= 5 * Store.heroLevel;
+        Store.heroLevel++;
+        Store.Lives++;
+        Store.manaMax += 10;
+
+        Store.MessageUI = "Level up!!!";
+        Score.UpdateScoreText(Store.Score);
+        StartCoroutine(CleanMessage());
     }
     
     IEnumerator CleanMessage()
@@ -40,4 +46,3 @@ public class LevelUp : MonoBehaviour
         Store.MessageUI = "";
     }
 }
-

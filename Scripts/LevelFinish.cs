@@ -14,8 +14,19 @@ public class LevelFinish : MonoBehaviour
         {
             nextTrigger = true;
             Store.Score += score;
-            Store.level++;  
-            SceneManager.LoadScene(Store.level);
+            Store.level++;
+            Store.MessageUI = "Level passed!!!";
+            StartCoroutine(NextLevel());
+            collision.gameObject.SetActive(false);
+            collision.gameObject.tag = "Untagged";
         }
+    }
+    
+    IEnumerator NextLevel()
+    {
+        yield return new WaitForSeconds(1);
+        Store.MessageUI = "";
+        SceneManager.LoadScene(Store.level);
+
     }
 }

@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Store.Mana > 1f && !_flyBlock)
             {
-                Store.Mana -= 30f * Time.deltaTime;
+                Store.Mana -= 50f * Time.deltaTime;
                 _fly = true;
                 if (cv.y < 0)
                 {

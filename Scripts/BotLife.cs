@@ -18,20 +18,24 @@ public class BotCollider : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (_isDead) return;
+        
         if (collision.gameObject.CompareTag("Weapon"))
         {
             hp--;
-            _an.SetTrigger("damage");
-        }
-
-        if (_isDead) return;
-        
-        if (hp <= 0)
-        {
-            _an.SetTrigger("death");
-            _rb.linearVelocity = Vector2.zero;
-            Store.Score += botScore;
-            _isDead = true;
+            if (hp <= 0)
+            {
+                _an.SetTrigger("death");
+                _rb.linearVelocity = Vector2.zero;
+                Debug.Log(Store.Score);
+                Store.Score += botScore;
+                Debug.Log(Store.Score);
+                _isDead = true;
+            }
+            else
+            {
+                _an.SetTrigger("damage");    
+            }
         }
     }
     
