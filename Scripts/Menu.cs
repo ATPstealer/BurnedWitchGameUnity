@@ -3,6 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
+    [SerializeField] private GameObject continueButton;
+
+    private void Start()
+    {
+        if (continueButton != null)
+        {
+            continueButton.SetActive(Store.level != 0);
+        }
+    }
+
     public void NewGameButton()
     {
         Store.level = 1;
@@ -19,6 +29,8 @@ public class Menu : MonoBehaviour
 
     public void QuitButton()
     {
-        Application.Quit();
+        System.Diagnostics.Process.GetCurrentProcess().Kill();
+        AndroidJavaObject activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
+        activity.Call<bool>("moveTaskToBack", true);
     }
 }

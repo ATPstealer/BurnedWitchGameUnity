@@ -37,7 +37,9 @@ public class PlayerDeath : MonoBehaviour
                 if (Store.Lives <= 0)
                 {
                     SceneManager.LoadScene(0);
+                    Store.level = 0;
                 }
+                
             }
         }
     }
