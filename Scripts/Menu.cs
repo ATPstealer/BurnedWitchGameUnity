@@ -29,8 +29,17 @@ public class Menu : MonoBehaviour
 
     public void QuitButton()
     {
-        System.Diagnostics.Process.GetCurrentProcess().Kill();
+        // Close the Unity Activity
         AndroidJavaObject activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
-        activity.Call<bool>("moveTaskToBack", true);
+        activity.Call("finish");
+
+        // Kill the app process
+        AndroidJavaClass process = new AndroidJavaClass("android.os.Process");
+        int pid = process.CallStatic<int>("myPid");
+        process.CallStatic("killProcess", pid);
+
+        // Optionally quit the Unity application
+        System.Environment.Exit(0);
+
     }
 }

@@ -26,7 +26,10 @@ public class BotCollider : MonoBehaviour
             if (hp <= 0)
             {
                 _an.SetTrigger("death");
-                _rb.linearVelocity = Vector2.zero;
+                if (_rb)
+                {
+                    _rb.linearVelocity = Vector2.zero;    
+                }
                 Debug.Log(Store.Score);
                 Store.Score += botScore;
                 Debug.Log(Store.Score);
